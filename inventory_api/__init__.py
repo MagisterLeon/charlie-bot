@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, render_template
 
-from inventory_client import inventory
+from inventory_api import inventory
 
 
 def create_app(test_config=None):
