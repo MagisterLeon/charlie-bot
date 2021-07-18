@@ -13,7 +13,7 @@ def isolate(fn_isolation):
 
 @pytest.fixture
 def app():
-    app = create_app({"TESTING": True, "UPLOAD_FOLDER": "./inventory"})
+    app = create_app({"TESTING": True, "UPLOAD_FOLDER": "./inventory_client/inventory"})
     yield app
 
 

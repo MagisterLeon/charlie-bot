@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  ganache:
+    restart: always
+    image: trufflesuite/ganache-cli
+    ports:
+      - '8545:8545'
+    command: ganache-cli --port 8545 --fork "https:/ga/eth.getblock.io/?api_key=06078250-22b3-4a3a-8243-1f06d24ae2c8" --unlock 0xb3cC81d316e67DE761E0aefBc35C70D76965dD05 --unlock 0xB31C99592bddF9AFdDCbDCC9c98DDbF98B256F23 --mnemonic "concert ladder decline crumble mention because pepper address scan volco pulse pig"
