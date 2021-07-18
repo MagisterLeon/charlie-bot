@@ -1,19 +1,26 @@
+import os
+import shutil
+
 import pytest
 from brownie import config, network
 
 from inventory_client import create_app
 
+INVENTORY_PATH = "inventory"
 
-@pytest.fixture(scope="function", autouse=True)
-def isolate(fn_isolation):
-    # perform a chain rewind after completing each test, to ensure proper isolation
-    # https://eth-brownie.readthedocs.io/en/v1.10.3/tests-pytest-intro.html#isolation-fixtures
-    pass
+
+@pytest.fixture(autouse=True)
+def isolate():
+    # setup
+    os.mkdir(INVENTORY_PATH)
+    yield
+    # teardown
+    shutil.rmtree(INVENTORY_PATH)
 
 
 @pytest.fixture
 def app():
-    app = create_app({"TESTING": True, "UPLOAD_FOLDER": "./inventory_client/inventory"})
+    app = create_app({"TESTING": True, "UPLOAD_FOLDER": INVENTORY_PATH})
     yield app
 
 
