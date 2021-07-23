@@ -56,7 +56,7 @@ def dai(interface):
 
 
 @pytest.fixture(scope="module")
-def charlie_account():
+def seller_account():
     return accounts[0].address
 
 
