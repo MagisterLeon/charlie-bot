@@ -7,8 +7,6 @@ from brownie import config, network, accounts
 
 from inventory_api import create_app
 
-INVENTORY_PATH = "inventory"
-
 
 class Utils:
 
@@ -22,10 +20,11 @@ class Utils:
 @pytest.fixture(autouse=True)
 def isolate():
     # setup
-    os.mkdir(INVENTORY_PATH)
+    os.environ["INVENTORY_PATH"] = "/tmp/inventory"
+    os.mkdir(os.environ["INVENTORY_PATH"])
     yield
     # teardown
-    shutil.rmtree(INVENTORY_PATH)
+    shutil.rmtree(os.environ["INVENTORY_PATH"])
 
 
 @pytest.fixture(scope="module")
@@ -35,7 +34,7 @@ def utils():
 
 @pytest.fixture
 def flask_app():
-    app = create_app({"TESTING": True, "UPLOAD_FOLDER": INVENTORY_PATH})
+    app = create_app({"TESTING": True, "UPLOAD_FOLDER": os.environ["INVENTORY_PATH"]})
     yield app
 
 

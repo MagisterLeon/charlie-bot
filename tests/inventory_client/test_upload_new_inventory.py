@@ -10,7 +10,7 @@ def test_upload_one_inventory(inventory_api_client, utils):
 
     # then
     assert result.status_code == 200
-    assert os.path.isfile("./inventory/psilocybe.yaml")
+    assert os.path.isfile(os.environ["INVENTORY_PATH"] + "/psilocybe.yaml")
 
 
 def test_upload_multiple_inventories(inventory_api_client, utils):
@@ -19,11 +19,13 @@ def test_upload_multiple_inventories(inventory_api_client, utils):
     file_data2 = utils.build_file_data("agaricus", b'content')
 
     # when
-    result1 = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data', data=file_data1)
-    result2 = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data', data=file_data2)
+    result1 = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data',
+                                        data=file_data1)
+    result2 = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data',
+                                        data=file_data2)
 
     # then
     assert result1.status_code == 200
-    assert os.path.isfile("./inventory/psilocybe.yaml")
+    assert os.path.isfile(os.environ["INVENTORY_PATH"] + "/psilocybe.yaml")
     assert result2.status_code == 200
-    assert os.path.isfile("./inventory/agaricus.yaml")
+    assert os.path.isfile(os.environ["INVENTORY_PATH"] + "/agaricus.yaml")

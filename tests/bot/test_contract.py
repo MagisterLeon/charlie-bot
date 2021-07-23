@@ -4,9 +4,6 @@ from bot.utils import to_bytes
 
 def upload_inventory(utils, inventory_api_client, offer_id):
     offer_content = f"""
-        genus: Psilocybe
-        mass: 10
-        price: 100
         id: {offer_id}
         location: 50.654164, 16.512376
         """
@@ -19,8 +16,8 @@ def ask_for_offer(dai, shroom_market_contract, customer, seller, offer_id):
     shroom_market_contract.ask(b'pkey', seller, to_bytes(offer_id), 100, {'from': customer})
 
 
-def test_charlie_should_receive_100_dai_when_confirmed_order(shroom_market, inventory_api_client, dai, charlie_account,
-                                                             customer_account, utils):
+def test_charlie_should_receive_dai_when_confirmed_order(shroom_market, inventory_api_client, dai, charlie_account,
+                                                         customer_account, utils):
     # given
     offer_id = "offer_1"
     upload_inventory(utils, inventory_api_client, offer_id)
