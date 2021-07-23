@@ -14,10 +14,9 @@ networks:
   default: development
   development:
     dai_address: '0x6b175474e89094c44da98b954eedeac495271d0f'
-    charlie_address: '0xB31C99592bddF9AFdDCbDCC9c98DDbF98B256F23'
     customer_address: '0xb3cC81d316e67DE761E0aefBc35C70D76965dD05'
     cmd_settings:
-      fork: 'https://cloudflare-eth.com/'
+      fork: 'https://eth.getblock.io/?api_key=06078250-22b3-4a3a-8243-1f06d24ae2c8'
       unlock:
         - 0xb3cC81d316e67DE761E0aefBc35C70D76965dD05
         - 0xB31C99592bddF9AFdDCbDCC9c98DDbF98B256F23

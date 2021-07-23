@@ -13,9 +13,9 @@ INVENTORY_PATH = "inventory"
 class Utils:
 
     @staticmethod
-    def build_file_data(offer_id: str):
+    def build_file_data(offer_id: str, offer_content: bytes):
         return {
-            'file': (BytesIO(b'file content'), f"{offer_id}.yaml")
+            'file': (BytesIO(offer_content), f"{offer_id}.yaml")
         }
 
 
@@ -46,7 +46,9 @@ def inventory_api_client(flask_app):
 
 @pytest.fixture(scope="module")
 def shroom_market(ShroomMarket):
-    return ShroomMarket.deploy({'from': accounts[0]})
+    contract = ShroomMarket.deploy({'from': accounts[0]})
+    os.environ["SHROOM_MARKET_CONTRACT_ADDRESS"] = contract.address
+    return contract
 
 
 @pytest.fixture(scope="module")
@@ -56,7 +58,7 @@ def dai(interface):
 
 @pytest.fixture(scope="module")
 def charlie_account():
-    return config['networks'][network.show_active()]['charlie_address']
+    return accounts[0].address
 
 
 @pytest.fixture(scope="module")

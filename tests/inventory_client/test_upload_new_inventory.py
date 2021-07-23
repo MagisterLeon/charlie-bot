@@ -3,7 +3,7 @@ import os
 
 def test_upload_one_inventory(inventory_api_client, utils):
     # given
-    file_data = utils.build_file_data("psilocybe")
+    file_data = utils.build_file_data("psilocybe", b'content')
 
     # when
     result = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data', data=file_data)
@@ -15,8 +15,8 @@ def test_upload_one_inventory(inventory_api_client, utils):
 
 def test_upload_multiple_inventories(inventory_api_client, utils):
     # given
-    file_data1 = utils.build_file_data("psilocybe")
-    file_data2 = utils.build_file_data("agaricus")
+    file_data1 = utils.build_file_data("psilocybe", b'content')
+    file_data2 = utils.build_file_data("agaricus", b'content')
 
     # when
     result1 = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data', data=file_data1)
