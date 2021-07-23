@@ -3,6 +3,7 @@ import shutil
 from io import BytesIO
 
 import pytest
+from Crypto.PublicKey import RSA
 from brownie import config, network, accounts
 
 from inventory_api import create_app
@@ -63,3 +64,15 @@ def seller_account():
 @pytest.fixture(scope="module")
 def customer_account():
     return config['networks'][network.show_active()]['customer_address']
+
+
+@pytest.fixture(scope="module")
+def public_key():
+    with open("../resources/public.pem", "rb") as fp:
+        return RSA.importKey(fp.read())
+
+
+@pytest.fixture(scope="module")
+def private_key():
+    with open("../resources/private.pem", "rb") as fp:
+        return RSA.importKey(fp.read())
