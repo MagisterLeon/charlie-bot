@@ -1,4 +1,4 @@
-from bot.crypto import encrypt_data, decrypt_data
+from bot.crypto import encrypt, decrypt
 
 
 def test_encryption(public_key, private_key):
@@ -6,7 +6,7 @@ def test_encryption(public_key, private_key):
     data = "hello charlie!"
 
     # when
-    result = encrypt_data(data, public_key)
+    result = encrypt(data, public_key)
 
     # then
-    assert decrypt_data(result, private_key) == data
+    assert decrypt(result, private_key) == data

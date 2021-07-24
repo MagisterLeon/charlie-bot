@@ -1,4 +1,7 @@
+import pytest
+
 from bot.contract import ShroomMarketContract
+from bot.crypto import decrypt
 from bot.utils import to_bytes
 
 
@@ -13,21 +16,63 @@ def upload_inventory(utils, inventory_api_client, offer_id):
 
 def ask_for_offer(dai, shroom_market_contract, customer, seller, offer_id):
     dai.approve(shroom_market_contract, 100, {'from': customer})
-    shroom_market_contract.ask(b'pkey', seller, to_bytes(offer_id), 100, {'from': customer})
+    shroom_market_contract.ask(b'public_key', seller, to_bytes(offer_id), 100, {'from': customer})
 
 
-def test_seller_should_receive_dai_when_confirmed_order(shroom_market, inventory_api_client, dai, seller_account,
-                                                         customer_account, utils):
+def test_seller_should_receive_dai_when_confirm_order(shroom_market, inventory_api_client, dai, seller_account,
+                                                      customer_account, utils, public_key):
     # given
     offer_id = "offer_1"
     upload_inventory(utils, inventory_api_client, offer_id)
     ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
 
     uut = ShroomMarketContract(shroom_market.address, "contracts/shroom_market_abi.json")
-    offer = {"id": offer_id, "location": "location"}
+    offer = {"id": offer_id, "location": "50.654164, 16.512376"}
 
     # when
-    uut.confirm_order(customer_account, offer, seller_account, 100)
+    uut.confirm_order(customer_account, public_key, offer, seller_account, 100)
 
     # then
     assert dai.balanceOf(seller_account) == 100
+
+
+def test_customer_is_able_to_decrypt_secret_location_with_private_key(shroom_market, inventory_api_client, dai,
+                                                                      seller_account, customer_account,
+                                                                      utils, public_key, private_key):
+    # given
+    offer_id = "offer_1"
+    upload_inventory(utils, inventory_api_client, offer_id)
+    ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
+
+    uut = ShroomMarketContract(shroom_market.address, "contracts/shroom_market_abi.json")
+    offer = {"id": offer_id, "location": "50.654164, 16.512376"}
+
+    # when
+    uut.confirm_order(customer_account, public_key, offer, seller_account, 100)
+    location = uut.contract.events.Confirm.createFilter(fromBlock="latest").get_all_entries()[0].args['location']
+
+    # then
+    decrypted_location = decrypt(location, private_key)
+    assert decrypted_location == "50.654164, 16.512376"
+
+
+def test_customer_is_not_able_to_decrypt_secret_location_with_another_private_key(shroom_market, inventory_api_client,
+                                                                                  dai, seller_account, customer_account,
+                                                                                  utils, public_key,
+                                                                                  another_private_key):
+    # given
+    offer_id = "offer_1"
+    upload_inventory(utils, inventory_api_client, offer_id)
+    ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
+
+    uut = ShroomMarketContract(shroom_market.address, "contracts/shroom_market_abi.json")
+    offer = {"id": offer_id, "location": "50.654164, 16.512376"}
+
+    # when
+    uut.confirm_order(customer_account, public_key, offer, seller_account, 100)
+    location = uut.contract.events.Confirm.createFilter(fromBlock="latest").get_all_entries()[0].args['location']
+
+    # then
+    with pytest.raises(ValueError) as info:
+        decrypt(location, another_private_key)
+        assert info == "Ciphertext with incorrect length."

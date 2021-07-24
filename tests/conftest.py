@@ -6,6 +6,7 @@ import pytest
 from Crypto.PublicKey import RSA
 from brownie import config, network, accounts
 
+from definitions import ROOT_DIR
 from inventory_api import create_app
 
 
@@ -68,11 +69,17 @@ def customer_account():
 
 @pytest.fixture(scope="module")
 def public_key():
-    with open("../resources/public.pem", "rb") as fp:
+    with open(ROOT_DIR + "/tests/resources/customer_public.pem", "rb") as fp:
         return RSA.importKey(fp.read())
 
 
 @pytest.fixture(scope="module")
 def private_key():
-    with open("../resources/private.pem", "rb") as fp:
+    with open(ROOT_DIR + "/tests/resources/customer_private.pem", "rb") as fp:
+        return RSA.importKey(fp.read())
+
+
+@pytest.fixture(scope="module")
+def another_private_key():
+    with open(ROOT_DIR + "/tests/resources/another_private.pem", "rb") as fp:
         return RSA.importKey(fp.read())

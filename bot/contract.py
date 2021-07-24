@@ -4,6 +4,7 @@ import os
 from web3 import Web3
 from web3.types import TxReceipt
 
+from bot.crypto import encrypt
 from bot.utils import to_bytes
 
 
@@ -18,12 +19,12 @@ class Contract:
 
 class ShroomMarketContract(Contract):
 
-    def confirm_order(self, customer: str, offer: dict, seller: str, total: int) -> TxReceipt:
+    def confirm_order(self, customer: str, customer_pkey: str, offer: dict, seller: str, total: int) -> TxReceipt:
         offer_id = offer['id']
 
         tx_hash = self.contract.functions.confirm(customer,
                                                   to_bytes(offer_id),
                                                   total,
-                                                  to_bytes(offer['location'])
+                                                  encrypt(offer['location'], customer_pkey)
                                                   ).transact({'from': seller})
-        self.w3.eth.wait_for_transaction_receipt(tx_hash)
+        return self.w3.eth.wait_for_transaction_receipt(tx_hash)
