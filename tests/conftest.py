@@ -20,8 +20,9 @@ class Utils:
 
 
 @pytest.fixture(autouse=True)
-def isolate():
+def isolate(fn_isolation):
     # setup
+    os.environ["HTTP_PROVIDER_URL"] = "http://127.0.0.1:8545"
     os.environ["INVENTORY_PATH"] = "/tmp/inventory"
     os.mkdir(os.environ["INVENTORY_PATH"])
     yield
@@ -59,7 +60,8 @@ def dai(interface):
 
 @pytest.fixture(scope="module")
 def seller_account():
-    return accounts[0].address
+    os.environ["USER_ADDRESS"] = accounts[1].address
+    return accounts[1].address
 
 
 @pytest.fixture(scope="module")

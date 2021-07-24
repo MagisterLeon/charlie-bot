@@ -1,6 +1,6 @@
 import os
 
-from bot.inventory import Inventory
+from bot.inventory import Inventory, Offer
 from bot.utils import to_bytes
 
 
@@ -37,8 +37,8 @@ def test_inventory_has_all_offers(inventory_api_client, utils):
     uut = Inventory(os.environ["INVENTORY_PATH"])
 
     # then
-    assert uut.offers[offer_1['id']] == offer_1
-    assert uut.offers[offer_2['id']] == offer_2
+    assert uut.offers[offer_1['id']] == Offer(offer_1)
+    assert uut.offers[offer_2['id']] == Offer(offer_2)
 
 
 def test_mark_offer_as_sold(inventory_api_client, utils):
@@ -57,5 +57,5 @@ def test_mark_offer_as_sold(inventory_api_client, utils):
     uut.mark_offer_as_sold(offer_1['id'])
 
     # then
-    assert uut.offers[offer_1['id']]['sold']
-    assert Inventory(os.environ["INVENTORY_PATH"]).offers[offer_1['id']]['sold']
+    assert uut.offers[offer_1['id']].sold
+    assert Inventory(os.environ["INVENTORY_PATH"]).offers[offer_1['id']].sold

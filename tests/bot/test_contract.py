@@ -1,7 +1,9 @@
 import pytest
 
-from bot.contract import ShroomMarketContract
+from bot.contracts import ShroomMarketContract
 from bot.crypto import decrypt
+from bot.events import AskEvent
+from bot.inventory import Offer
 from bot.utils import to_bytes
 
 
@@ -19,18 +21,29 @@ def ask_for_offer(dai, shroom_market_contract, customer, seller, offer_id):
     shroom_market_contract.ask(b'public_key', seller, to_bytes(offer_id), 100, {'from': customer})
 
 
+@pytest.fixture
+def ask(customer_account, public_key, seller_account):
+    return AskEvent.from_values(public_key, customer_account, seller_account, 100)
+
+
 def test_seller_should_receive_dai_when_confirm_order(shroom_market, inventory_api_client, dai, seller_account,
-                                                      customer_account, utils, public_key):
+                                                      customer_account, utils, ask):
     # given
     offer_id = "offer_1"
     upload_inventory(utils, inventory_api_client, offer_id)
     ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
 
-    uut = ShroomMarketContract(shroom_market.address, "contracts/shroom_market_abi.json")
-    offer = {"id": offer_id, "location": "50.654164, 16.512376"}
+    uut = ShroomMarketContract(shroom_market.address, "/contracts/shroom_market_abi.json")
+    offer = Offer({
+        "genus": "psilocybe",
+        "mass": 10,
+        "price": 100,
+        "id": offer_id,
+        "location": "50.654164, 16.512376"
+    })
 
     # when
-    uut.confirm_order(customer_account, public_key, offer, seller_account, 100)
+    uut.confirm_order(ask, offer)
 
     # then
     assert dai.balanceOf(seller_account) == 100
@@ -38,17 +51,23 @@ def test_seller_should_receive_dai_when_confirm_order(shroom_market, inventory_a
 
 def test_customer_is_able_to_decrypt_secret_location_with_private_key(shroom_market, inventory_api_client, dai,
                                                                       seller_account, customer_account,
-                                                                      utils, public_key, private_key):
+                                                                      utils, private_key, ask):
     # given
     offer_id = "offer_1"
     upload_inventory(utils, inventory_api_client, offer_id)
     ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
 
-    uut = ShroomMarketContract(shroom_market.address, "contracts/shroom_market_abi.json")
-    offer = {"id": offer_id, "location": "50.654164, 16.512376"}
+    uut = ShroomMarketContract(shroom_market.address, "/contracts/shroom_market_abi.json")
+    offer = Offer({
+        "genus": "psilocybe",
+        "mass": 10,
+        "price": 100,
+        "id": offer_id,
+        "location": "50.654164, 16.512376"
+    })
 
     # when
-    uut.confirm_order(customer_account, public_key, offer, seller_account, 100)
+    uut.confirm_order(ask, offer)
     location = uut.contract.events.Confirm.createFilter(fromBlock="latest").get_all_entries()[0].args['location']
 
     # then
@@ -58,18 +77,24 @@ def test_customer_is_able_to_decrypt_secret_location_with_private_key(shroom_mar
 
 def test_customer_is_not_able_to_decrypt_secret_location_with_another_private_key(shroom_market, inventory_api_client,
                                                                                   dai, seller_account, customer_account,
-                                                                                  utils, public_key,
+                                                                                  utils, ask,
                                                                                   another_private_key):
     # given
     offer_id = "offer_1"
     upload_inventory(utils, inventory_api_client, offer_id)
     ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
 
-    uut = ShroomMarketContract(shroom_market.address, "contracts/shroom_market_abi.json")
-    offer = {"id": offer_id, "location": "50.654164, 16.512376"}
+    uut = ShroomMarketContract(shroom_market.address, "/contracts/shroom_market_abi.json")
+    offer = Offer({
+        "genus": "psilocybe",
+        "mass": 10,
+        "price": 100,
+        "id": offer_id,
+        "location": "50.654164, 16.512376"
+    })
 
     # when
-    uut.confirm_order(customer_account, public_key, offer, seller_account, 100)
+    uut.confirm_order(ask, offer)
     location = uut.contract.events.Confirm.createFilter(fromBlock="latest").get_all_entries()[0].args['location']
 
     # then
