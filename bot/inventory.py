@@ -4,7 +4,7 @@ from typing import Dict
 import yaml
 
 from bot.config import settings
-from bot.utils import format_decimals
+from bot.utils import format_dai_to_decimals
 
 
 class Offer:
@@ -40,7 +40,7 @@ class Offer:
 
     def __str__(self):
         return f"id: {self.id} | genus: {self.genus} | mass: {self.mass} " \
-               f"| price: {format_decimals(self.price)} " \
+               f"| price: {format_dai_to_decimals(self.price)} " \
                f"| location: {self.location} | sold: {self.sold} "
 
     def is_valid(self, price: int) -> bool:

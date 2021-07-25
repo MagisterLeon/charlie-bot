@@ -10,7 +10,7 @@ from bot.config import settings
 from bot.crypto import encrypt
 from bot.events import AskEvent
 from bot.inventory import Offer
-from bot.utils import to_bytes, format_decimals
+from bot.utils import to_bytes, format_dai_to_decimals
 
 
 class Contract:
@@ -53,4 +53,4 @@ class DaiContract(Contract):
 
     def get_balance(self) -> str:
         balance = self.contract.functions.balanceOf(settings.USER_ADDRESS).call()
-        return format_decimals(balance)
+        return format_dai_to_decimals(balance)
