@@ -26,7 +26,7 @@ class ShroomMarketBot:
 
     def handle_ask_event(self, event: LogReceipt):
         ask = AskEvent(event)
-        print(f"Handling ask event: {ask.__str__()}", file=sys.stdout)
+        print(f"Handling ask event: [{ask.__str__()}]", file=sys.stdout)
 
         if ask.seller_address == settings.USER_ADDRESS:
             inventory = Inventory(settings.INVENTORY_PATH)
