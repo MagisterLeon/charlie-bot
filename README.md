@@ -1,4 +1,4 @@
-#Bot interacting with a marketplace on Ethereum
+# Bot interacting with a marketplace on Ethereum
 
 The goal is to automate operations of fantasy magic shrooms vendor Charlie by writing a bot transacting on
 Ethereum.
