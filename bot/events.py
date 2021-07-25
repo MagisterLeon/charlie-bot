@@ -4,6 +4,9 @@ from web3._utils.filters import LogFilter
 
 
 class AskEvent:
+    """
+    Representation of relevant information from ShroomMarket ask event
+    """
 
     def __init__(self, event):
         self.customer_public_key = event['args']['customer_pubk']

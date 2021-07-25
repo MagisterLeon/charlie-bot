@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import request, Blueprint, current_app
+from flask import request, Blueprint, current_app, render_template
 from werkzeug.utils import secure_filename
 
 bp = Blueprint("inventory", __name__)
@@ -15,6 +15,7 @@ def upload_inventory():
 
     print(f"Uploading inventory file: {filename} to folder: {folder}", file=sys.stdout)
     file.save(os.path.join(folder, filename))
+    print(f"Inventory: {filename} uploaded successfully", file=sys.stdout)
 
-    return 'Inventory uploaded successfully!'
+    return render_template('index.html')
 

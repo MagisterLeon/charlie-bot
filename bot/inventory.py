@@ -42,6 +42,9 @@ class Offer:
 
 
 class Inventory:
+    """
+    Class responsible for loading offers stored in .yaml format to memory and execute operations on them
+    """
 
     def __init__(self, inventory_path: str):
         self.offers: Dict[str, Offer] = {}

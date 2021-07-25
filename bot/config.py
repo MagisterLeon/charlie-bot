@@ -7,8 +7,9 @@ ROOT_DIR = path.abspath(path.dirname(__file__) + "/..")
 ENV_PATH = path.join(ROOT_DIR, ".env")
 
 defaults = {
-    "HTTP_PROVIDER_URL": "http://ganache:8545",
-    "USER_ADDRESS": "0xB31C99592bddF9AFdDCbDCC9c98DDbF98B256F23",
+    "HTTP_PROVIDER_URL": "http://127.0.0.1:8545",
+    "USER_ADDRESS": "0x11BdE3126f46Cfb3851a9102c60b510B1305aF5b",
+    "SHROOM_MARKET_CONTRACT_ADDRESS": "0x577C66469b5df2781B3a77a9dC825eC2de76c4a4",
     "INVENTORY_PATH": ROOT_DIR + "/inventory",
     "EVENT_LISTENER_POLL_INTERVAL": 15,
     "PROJECT_DIR": PROJECT_DIR,
