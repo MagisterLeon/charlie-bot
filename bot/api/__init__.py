@@ -4,6 +4,7 @@ from flask import Flask, render_template
 
 from bot.api import inventory
 from bot.config import settings
+from bot.contracts import DaiContract
 from bot.inventory import Inventory
 
 
@@ -25,7 +26,8 @@ def create_app(test_config=None):
     @app.route('/')
     def home():
         offers = Inventory(settings.INVENTORY_PATH).offers.values()
-        return render_template('index.html', data=offers)
+        dai = DaiContract(settings.DAI_CONTRACT_ADDRESS, "/contracts/min_erc20_abi.json")
+        return render_template('index.html', offers=offers, dai=dai.get_balance())
 
     app.register_blueprint(inventory.bp)
 

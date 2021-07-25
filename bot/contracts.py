@@ -10,7 +10,7 @@ from bot.config import settings
 from bot.crypto import encrypt
 from bot.events import AskEvent
 from bot.inventory import Offer
-from bot.utils import to_bytes
+from bot.utils import to_bytes, format_decimals
 
 
 class Contract:
@@ -20,7 +20,7 @@ class Contract:
         self.w3 = Web3(Web3.HTTPProvider(settings.HTTP_PROVIDER_URL))
 
         with open(settings.ROOT_DIR + abi_path, 'r') as abi:
-            self.contract = self.w3.eth.contract(address=address, abi=json.load(abi))
+            self.contract = self.w3.eth.contract(address=Web3.toChecksumAddress(address), abi=json.load(abi))
 
 
 class ShroomMarketContract(Contract):
@@ -47,3 +47,10 @@ class ShroomMarketContract(Contract):
                                                   ).transact({'from': self.seller})
 
         return self.w3.eth.wait_for_transaction_receipt(tx_hash)
+
+
+class DaiContract(Contract):
+
+    def get_balance(self) -> str:
+        balance = self.contract.functions.balanceOf(settings.USER_ADDRESS).call()
+        return format_decimals(balance)
