@@ -11,7 +11,7 @@ def test_upload_one_inventory(inventory_api_client, utils):
     result = inventory_api_client.post('/inventory', buffered=True, content_type='multipart/form-data', data=file_data)
 
     # then
-    assert result.status_code == 200
+    assert result.status_code == 302
     assert os.path.isfile(settings.INVENTORY_PATH + "/psilocybe.yaml")
 
 
@@ -27,7 +27,7 @@ def test_upload_multiple_inventories(inventory_api_client, utils):
                                         data=file_data2)
 
     # then
-    assert result1.status_code == 200
+    assert result1.status_code == 302
     assert os.path.isfile(settings.INVENTORY_PATH + "/psilocybe.yaml")
-    assert result2.status_code == 200
+    assert result2.status_code == 302
     assert os.path.isfile(settings.INVENTORY_PATH + "/agaricus.yaml")

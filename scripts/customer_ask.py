@@ -4,6 +4,9 @@ from brownie import Contract, ShroomMarket, interface, network, config, accounts
 
 from bot.crypto import import_rsa_key_bytes
 
+'''
+Change offer_id and offer_price values and send ask transaction to ShroomMarket as a default customer 
+'''
 offer_id = "offer_1"
 offer_price = 100
 shroom_market_abi_path = path.abspath(path.dirname(__file__) + "/..") + "/contracts/shroom_market_abi.json"
