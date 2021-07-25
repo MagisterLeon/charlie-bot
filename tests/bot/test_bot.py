@@ -1,8 +1,7 @@
-import os
-
-from bot.bot import ShroomMarketBot
+from bot.config import settings
 from bot.contracts import ShroomMarketContract
 from bot.inventory import Inventory
+from bot.run import ShroomMarketBot
 from bot.utils import to_bytes
 
 
@@ -33,8 +32,7 @@ def test_confirm_offer_and_mark_as_sold_when_handle_valid_offer_ask(shroom_marke
     ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
 
     contract = ShroomMarketContract(shroom_market.address, "/contracts/shroom_market_abi.json")
-    inventory = Inventory(os.environ["INVENTORY_PATH"])
-    uut = ShroomMarketBot(contract, inventory)
+    uut = ShroomMarketBot(contract)
     event = {
         "args": {
             "customer_pkey": public_key,
@@ -49,8 +47,7 @@ def test_confirm_offer_and_mark_as_sold_when_handle_valid_offer_ask(shroom_marke
 
     # then
     assert dai.balanceOf(seller_account) == 100
-    assert inventory.offers[offer_id].sold
-    assert Inventory(os.environ["INVENTORY_PATH"]).offers[offer_id].sold
+    assert Inventory(settings.INVENTORY_PATH).offers[offer_id].sold
 
 
 def test_ignore_sold_offers(shroom_market, inventory_api_client, dai,
@@ -62,8 +59,8 @@ def test_ignore_sold_offers(shroom_market, inventory_api_client, dai,
     ask_for_offer(dai, shroom_market, customer_account, seller_account, offer_id)
 
     contract = ShroomMarketContract(shroom_market.address, "/contracts/shroom_market_abi.json")
-    inventory = Inventory(os.environ["INVENTORY_PATH"])
-    uut = ShroomMarketBot(contract, inventory)
+    inventory = Inventory(settings.INVENTORY_PATH)
+    uut = ShroomMarketBot(contract)
     event = {
         "args": {
             "customer_pkey": public_key,
@@ -90,8 +87,7 @@ def test_ignore_offers_with_different_id(shroom_market, inventory_api_client, da
     ask_for_offer(dai, shroom_market, customer_account, seller_account, "offer_2")
 
     contract = ShroomMarketContract(shroom_market.address, "/contracts/shroom_market_abi.json")
-    inventory = Inventory(os.environ["INVENTORY_PATH"])
-    uut = ShroomMarketBot(contract, inventory)
+    uut = ShroomMarketBot(contract)
     event = {
         "args": {
             "customer_pkey": public_key,

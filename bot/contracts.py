@@ -1,23 +1,24 @@
 import json
-import os
+import sys
 
 from web3 import Web3
 from web3._utils.filters import LogFilter
 from web3.types import TxReceipt
 
+from bot.config import settings
 from bot.crypto import encrypt
 from bot.events import AskEvent
 from bot.inventory import Offer
 from bot.utils import to_bytes
-from definitions import ROOT_DIR
 
 
 class Contract:
 
     def __init__(self, address: str, abi_path: str):
-        self.w3 = Web3(Web3.HTTPProvider(os.environ["HTTP_PROVIDER_URL"]))
+        print(f'connecting to {settings.HTTP_PROVIDER_URL}', file=sys.stdout)
+        self.w3 = Web3(Web3.HTTPProvider(settings.HTTP_PROVIDER_URL))
 
-        with open(ROOT_DIR + abi_path, 'r') as abi:
+        with open(settings.ROOT_DIR + abi_path, 'r') as abi:
             self.contract = self.w3.eth.contract(address=address, abi=json.load(abi))
 
 
@@ -25,7 +26,7 @@ class ShroomMarketContract(Contract):
 
     def __init__(self, address: str, abi_path: str):
         super().__init__(address, abi_path)
-        self.seller = os.environ["USER_ADDRESS"]
+        self.seller = settings.USER_ADDRESS
 
     def get_ask_events_filter(self) -> LogFilter:
         return self.contract.events.Ask.createFilter(fromBlock="latest")

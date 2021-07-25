@@ -6,7 +6,7 @@ import pytest
 from Crypto.PublicKey import RSA
 from brownie import config, network, accounts
 
-from definitions import ROOT_DIR
+from bot.config import settings
 from inventory_api import create_app
 
 
@@ -22,12 +22,12 @@ class Utils:
 @pytest.fixture(autouse=True)
 def isolate(fn_isolation):
     # setup
-    os.environ["HTTP_PROVIDER_URL"] = "http://127.0.0.1:8545"
-    os.environ["INVENTORY_PATH"] = "/tmp/inventory"
-    os.mkdir(os.environ["INVENTORY_PATH"])
+    settings.HTTP_PROVIDER_URL = "http://127.0.0.1:8545"
+    settings.INVENTORY_PATH = settings.ROOT_DIR + "/tests/inventory"
+    os.mkdir(settings.INVENTORY_PATH)
     yield
     # teardown
-    shutil.rmtree(os.environ["INVENTORY_PATH"])
+    shutil.rmtree(settings.INVENTORY_PATH)
 
 
 @pytest.fixture(scope="module")
@@ -37,7 +37,7 @@ def utils():
 
 @pytest.fixture
 def flask_app():
-    app = create_app({"TESTING": True, "UPLOAD_FOLDER": os.environ["INVENTORY_PATH"]})
+    app = create_app({"TESTING": True, "UPLOAD_FOLDER": settings.INVENTORY_PATH})
     yield app
 
 
@@ -49,7 +49,7 @@ def inventory_api_client(flask_app):
 @pytest.fixture(scope="module")
 def shroom_market(ShroomMarket):
     contract = ShroomMarket.deploy({'from': accounts[0]})
-    os.environ["SHROOM_MARKET_CONTRACT_ADDRESS"] = contract.address
+    settings.SHROOM_MARKET_CONTRACT_ADDRESS = contract.address
     return contract
 
 
@@ -60,7 +60,7 @@ def dai(interface):
 
 @pytest.fixture(scope="module")
 def seller_account():
-    os.environ["USER_ADDRESS"] = accounts[1].address
+    settings.USER_ADDRESS = accounts[1].address
     return accounts[1].address
 
 
@@ -71,17 +71,17 @@ def customer_account():
 
 @pytest.fixture(scope="module")
 def public_key():
-    with open(ROOT_DIR + "/tests/resources/customer_public.pem", "rb") as fp:
+    with open(settings.ROOT_DIR + "/tests/resources/customer_public.pem", "rb") as fp:
         return RSA.importKey(fp.read())
 
 
 @pytest.fixture(scope="module")
 def private_key():
-    with open(ROOT_DIR + "/tests/resources/customer_private.pem", "rb") as fp:
+    with open(settings.ROOT_DIR + "/tests/resources/customer_private.pem", "rb") as fp:
         return RSA.importKey(fp.read())
 
 
 @pytest.fixture(scope="module")
 def another_private_key():
-    with open(ROOT_DIR + "/tests/resources/another_private.pem", "rb") as fp:
+    with open(settings.ROOT_DIR + "/tests/resources/another_private.pem", "rb") as fp:
         return RSA.importKey(fp.read())

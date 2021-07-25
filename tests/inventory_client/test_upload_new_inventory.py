@@ -1,5 +1,7 @@
 import os
 
+from bot.config import settings
+
 
 def test_upload_one_inventory(inventory_api_client, utils):
     # given
@@ -10,7 +12,7 @@ def test_upload_one_inventory(inventory_api_client, utils):
 
     # then
     assert result.status_code == 200
-    assert os.path.isfile(os.environ["INVENTORY_PATH"] + "/psilocybe.yaml")
+    assert os.path.isfile(settings.INVENTORY_PATH + "/psilocybe.yaml")
 
 
 def test_upload_multiple_inventories(inventory_api_client, utils):
@@ -26,6 +28,6 @@ def test_upload_multiple_inventories(inventory_api_client, utils):
 
     # then
     assert result1.status_code == 200
-    assert os.path.isfile(os.environ["INVENTORY_PATH"] + "/psilocybe.yaml")
+    assert os.path.isfile(settings.INVENTORY_PATH + "/psilocybe.yaml")
     assert result2.status_code == 200
-    assert os.path.isfile(os.environ["INVENTORY_PATH"] + "/agaricus.yaml")
+    assert os.path.isfile(settings.INVENTORY_PATH + "/agaricus.yaml")

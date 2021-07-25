@@ -1,5 +1,4 @@
-import os
-
+from bot.config import settings
 from bot.inventory import Inventory, Offer
 from bot.utils import to_bytes
 
@@ -34,7 +33,7 @@ def test_inventory_has_all_offers(inventory_api_client, utils):
     }
     upload_inventory(utils, inventory_api_client, offer_1)
     upload_inventory(utils, inventory_api_client, offer_2)
-    uut = Inventory(os.environ["INVENTORY_PATH"])
+    uut = Inventory(settings.INVENTORY_PATH)
 
     # then
     assert uut.offers[offer_1['id']] == Offer(offer_1)
@@ -51,11 +50,11 @@ def test_mark_offer_as_sold(inventory_api_client, utils):
         "location": "location_1"
     }
     upload_inventory(utils, inventory_api_client, offer_1)
-    uut = Inventory(os.environ["INVENTORY_PATH"])
+    uut = Inventory(settings.INVENTORY_PATH)
 
     # when
     uut.mark_offer_as_sold(offer_1['id'])
 
     # then
     assert uut.offers[offer_1['id']].sold
-    assert Inventory(os.environ["INVENTORY_PATH"]).offers[offer_1['id']].sold
+    assert Inventory(settings.INVENTORY_PATH).offers[offer_1['id']].sold

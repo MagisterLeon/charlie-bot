@@ -1,8 +1,9 @@
-import os
 from pathlib import Path
 from typing import Dict
 
 import yaml
+
+from bot.config import settings
 
 
 class Offer:
@@ -49,8 +50,7 @@ class Inventory:
             self.offers[offer['id']] = Offer(offer)
 
     def mark_offer_as_sold(self, offer_id: str):
-        inventory_path = os.environ["INVENTORY_PATH"]
-        with open(f"{inventory_path}/{offer_id}.yaml", 'w') as fp:
+        with open(f"{settings.INVENTORY_PATH}/{offer_id}.yaml", 'w') as fp:
             offer = self.offers[offer_id]
             offer.sold = True
             yaml.dump(offer.__dict__, fp)
