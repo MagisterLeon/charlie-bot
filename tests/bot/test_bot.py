@@ -35,7 +35,7 @@ def test_confirm_offer_and_mark_as_sold_when_handle_valid_offer_ask(shroom_marke
     uut = ShroomMarketBot(contract)
     event = {
         "args": {
-            "customer_pkey": public_key,
+            "customer_pubk": public_key,
             "customer": customer_account,
             "seller": seller_account,
             "total": 100
@@ -63,7 +63,7 @@ def test_ignore_sold_offers(shroom_market, inventory_api_client, dai,
     uut = ShroomMarketBot(contract)
     event = {
         "args": {
-            "customer_pkey": public_key,
+            "customer_pubk": public_key,
             "customer": customer_account,
             "seller": seller_account,
             "total": 100
@@ -90,7 +90,7 @@ def test_ignore_offers_with_different_id(shroom_market, inventory_api_client, da
     uut = ShroomMarketBot(contract)
     event = {
         "args": {
-            "customer_pkey": public_key,
+            "customer_pubk": public_key,
             "customer": customer_account,
             "seller": seller_account,
             "total": 100

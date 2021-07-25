@@ -1,6 +1,7 @@
 import json
 import sys
 
+from Crypto.PublicKey import RSA
 from web3 import Web3
 from web3._utils.filters import LogFilter
 from web3.types import TxReceipt
@@ -38,7 +39,7 @@ class ShroomMarketContract(Contract):
         return ask_id_total > 0 and ask_id_total == ask.total
 
     def confirm_order(self, ask: AskEvent, offer: Offer) -> TxReceipt:
-        encrypted_location = encrypt(offer.location, ask.customer_public_key)
+        encrypted_location = encrypt(offer.location, RSA.importKey(ask.customer_public_key))
         tx_hash = self.contract.functions.confirm(ask.customer_address,
                                                   to_bytes(offer.id),
                                                   ask.total,

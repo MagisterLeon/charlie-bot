@@ -1,4 +1,5 @@
 import pytest
+from Crypto.PublicKey import RSA
 
 from bot.contracts import ShroomMarketContract
 from bot.crypto import decrypt
@@ -71,7 +72,7 @@ def test_customer_is_able_to_decrypt_secret_location_with_private_key(shroom_mar
     location = uut.contract.events.Confirm.createFilter(fromBlock="latest").get_all_entries()[0].args['location']
 
     # then
-    decrypted_location = decrypt(location, private_key)
+    decrypted_location = decrypt(location, RSA.importKey(private_key))
     assert decrypted_location == "50.654164, 16.512376"
 
 
@@ -99,5 +100,5 @@ def test_customer_is_not_able_to_decrypt_secret_location_with_another_private_ke
 
     # then
     with pytest.raises(ValueError) as info:
-        decrypt(location, another_private_key)
+        decrypt(location, RSA.importKey(another_private_key))
         assert info == "Ciphertext with incorrect length."

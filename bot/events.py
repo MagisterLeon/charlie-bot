@@ -1,4 +1,4 @@
-import asyncio
+import time
 
 from web3._utils.filters import LogFilter
 
@@ -6,7 +6,7 @@ from web3._utils.filters import LogFilter
 class AskEvent:
 
     def __init__(self, event):
-        self.customer_public_key = event['args']['customer_pkey']
+        self.customer_public_key = event['args']['customer_pubk']
         self.customer_address = event['args']['customer']
         self.seller_address = event['args']['seller']
         self.total = event['args']['total']
@@ -16,7 +16,7 @@ class AskEvent:
         return cls({
             "args":
                 {
-                    "customer_pkey": customer_public_key,
+                    "customer_pubk": customer_public_key,
                     "customer": customer_address,
                     "seller": seller_address,
                     "total": total
@@ -31,8 +31,8 @@ class EventListener:
         self.event_handler = event_handler
         self.poll_interval = poll_interval
 
-    async def start(self):
+    def start(self):
         while True:
             for event in self.event_filter.get_new_entries():
                 self.event_handler(event)
-            await asyncio.sleep(self.poll_interval)
+            time.sleep(self.poll_interval)

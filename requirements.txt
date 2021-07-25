@@ -11,7 +11,8 @@ click==7.1.2
 cytoolz==0.11.0
 eth-abi==2.1.1
 eth-account==0.5.4
-eth-brownie==1.14.6
+# version from branch used due to this error: https://github.com/eth-brownie/brownie/pull/1070
+eth-brownie @ git+https://github.com/kilogold/brownie.git@034e00d8728ecda9e8db185d963cc6747e803bb9
 eth-event==1.2.3
 eth-hash==0.3.1
 eth-keyfile==0.5.1

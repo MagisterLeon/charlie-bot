@@ -4,12 +4,12 @@ import dotenv
 
 PROJECT_DIR = path.abspath(path.dirname(__file__))
 ROOT_DIR = path.abspath(path.dirname(__file__) + "/..")
-ENV_PATH = path.join(PROJECT_DIR, ".env")
+ENV_PATH = path.join(ROOT_DIR, ".env")
 
 defaults = {
     "HTTP_PROVIDER_URL": "http://ganache:8545",
     "USER_ADDRESS": "0xB31C99592bddF9AFdDCbDCC9c98DDbF98B256F23",
-    "INVENTORY_PATH": "inventory",
+    "INVENTORY_PATH": ROOT_DIR + "/inventory",
     "EVENT_LISTENER_POLL_INTERVAL": 15,
     "PROJECT_DIR": PROJECT_DIR,
     "ROOT_DIR": ROOT_DIR,

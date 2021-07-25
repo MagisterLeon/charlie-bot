@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask import request, Blueprint, current_app
 from werkzeug.utils import secure_filename
@@ -12,7 +13,7 @@ def upload_inventory():
     filename = secure_filename(file.filename)
     folder = current_app.config['UPLOAD_FOLDER']
 
-    print(f"Uploading inventory file: {filename} to folder: {folder}")
+    print(f"Uploading inventory file: {filename} to folder: {folder}", file=sys.stdout)
     file.save(os.path.join(folder, filename))
 
     return 'Inventory uploaded successfully!'

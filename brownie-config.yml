@@ -15,6 +15,7 @@ networks:
   development:
     dai_address: '0x6b175474e89094c44da98b954eedeac495271d0f'
     customer_address: '0xb3cC81d316e67DE761E0aefBc35C70D76965dD05'
+    shroom_market_address: '0x577C66469b5df2781B3a77a9dC825eC2de76c4a4'
     cmd_settings:
       fork: 'https://eth.getblock.io/?api_key=06078250-22b3-4a3a-8243-1f06d24ae2c8'
       unlock:

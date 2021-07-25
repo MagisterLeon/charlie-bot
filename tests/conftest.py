@@ -3,11 +3,11 @@ import shutil
 from io import BytesIO
 
 import pytest
-from Crypto.PublicKey import RSA
 from brownie import config, network, accounts
 
 from bot.config import settings
-from inventory_api import create_app
+from bot.api import create_app
+from bot.crypto import import_rsa_key_bytes
 
 
 class Utils:
@@ -71,17 +71,14 @@ def customer_account():
 
 @pytest.fixture(scope="module")
 def public_key():
-    with open(settings.ROOT_DIR + "/tests/resources/customer_public.pem", "rb") as fp:
-        return RSA.importKey(fp.read())
+    return import_rsa_key_bytes("customer_public.pem")
 
 
 @pytest.fixture(scope="module")
 def private_key():
-    with open(settings.ROOT_DIR + "/tests/resources/customer_private.pem", "rb") as fp:
-        return RSA.importKey(fp.read())
+    return import_rsa_key_bytes("customer_private.pem")
 
 
 @pytest.fixture(scope="module")
 def another_private_key():
-    with open(settings.ROOT_DIR + "/tests/resources/another_private.pem", "rb") as fp:
-        return RSA.importKey(fp.read())
+    return import_rsa_key_bytes("another_private.pem")

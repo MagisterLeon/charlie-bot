@@ -2,14 +2,15 @@ import os
 
 from flask import Flask, render_template
 
-from inventory_api import inventory
+from bot.api import inventory
+from bot.config import settings
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
-        UPLOAD_FOLDER="../inventory",
+        UPLOAD_FOLDER=settings.INVENTORY_PATH,
         MAX_CONTENT_PATH=500
     )
 
