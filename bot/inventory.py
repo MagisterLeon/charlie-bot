@@ -42,7 +42,7 @@ class Offer:
                f"| location: {self.location} | sold: {self.sold} "
 
     def is_valid(self, price: int) -> bool:
-        return not self.sold and self.price == price
+        return not self.sold and price >= self.price
 
 
 class Inventory:
