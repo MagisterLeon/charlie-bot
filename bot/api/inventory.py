@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import request, Blueprint, current_app, render_template
+from flask import request, Blueprint, current_app, redirect, url_for
 from werkzeug.utils import secure_filename
 
 bp = Blueprint("inventory", __name__)
@@ -17,5 +17,5 @@ def upload_inventory():
     file.save(os.path.join(folder, filename))
     print(f"Inventory: {filename} uploaded successfully", file=sys.stdout)
 
-    return render_template('index.html')
+    return redirect(url_for('home'))
 

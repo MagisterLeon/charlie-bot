@@ -4,6 +4,7 @@ from flask import Flask, render_template
 
 from bot.api import inventory
 from bot.config import settings
+from bot.inventory import Inventory
 
 
 def create_app(test_config=None):
@@ -22,8 +23,9 @@ def create_app(test_config=None):
         pass
 
     @app.route('/')
-    def upload_file():
-        return render_template('index.html')
+    def home():
+        offers = Inventory(settings.INVENTORY_PATH).offers.values()
+        return render_template('index.html', data=offers)
 
     app.register_blueprint(inventory.bp)
 

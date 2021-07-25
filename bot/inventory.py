@@ -37,6 +37,10 @@ class Offer:
             self.sold
         ))
 
+    def __str__(self):
+        return f"id: {self.id} | genus: {self.genus} | mass: {self.mass} | price: {self.price} " \
+               f"| location: {self.location} | sold: {self.sold} "
+
     def is_valid(self, price: int) -> bool:
         return not self.sold and self.price == price
 
