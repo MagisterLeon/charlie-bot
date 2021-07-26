@@ -9,6 +9,9 @@ from bot.inventory import Inventory
 
 
 def create_app(test_config=None):
+    if not os.path.exists(settings.INVENTORY_PATH):
+        os.makedirs(settings.INVENTORY_PATH)
+
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
