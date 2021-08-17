@@ -23,7 +23,7 @@ def setup(utils):
     utils.upload_offer_1_inventory()
     utils.customer_ask_for_offer("offer_1")
 
-
+# TODO better setup overriding
 def test_confirm_offer_and_mark_as_sold_when_handle_valid_offer_ask(shroom_market, dai, seller_account, ask_event,
                                                                     setup):
     # given
