@@ -51,7 +51,8 @@ def isolate(fn_isolation):
     # setup
     settings.HTTP_PROVIDER_URL = "http://127.0.0.1:8545"
     settings.INVENTORY_PATH = settings.ROOT_DIR + "/tests/inventory"
-    os.mkdir(settings.INVENTORY_PATH)
+    if not os.path.isdir(settings.INVENTORY_PATH):
+        os.mkdir(settings.INVENTORY_PATH)
     yield
     # teardown
     shutil.rmtree(settings.INVENTORY_PATH)

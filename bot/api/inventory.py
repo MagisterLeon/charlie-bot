@@ -10,6 +10,7 @@ bp = Blueprint("inventory", __name__)
 @bp.route('/inventory', methods=['POST'])
 def upload_inventory():
     file = request.files['file']
+    # TODO validate file content
     filename = secure_filename(file.filename)
     folder = current_app.config['UPLOAD_FOLDER']
 

@@ -37,7 +37,7 @@ class ShroomMarketBot:
 
     def run(self):
         ask_filter = self.contract.get_ask_events_filter()
-        event_listener = EventListener(ask_filter, self.handle_ask_event, 2)
+        event_listener = EventListener(ask_filter, self.handle_ask_event, settings.EVENT_LISTENER_POLL_INTERVAL)
         print("Starting event listener", file=sys.stdout)
         event_listener.start()
 

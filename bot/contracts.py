@@ -33,6 +33,7 @@ class ShroomMarketContract(Contract):
         return self.contract.events.Ask.createFilter(fromBlock="latest")
 
     def did_customer_buy_offer(self, ask: AskEvent, offer_id: bytes) -> bool:
+        # TODO can we use hashing function from w3 instead of calling the contract?
         ask_id = self.contract.functions.get_ask_id(self.seller, offer_id, ask.customer_address).call()
         ask_id_total = self.contract.functions.asks(ask_id).call()
 

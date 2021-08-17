@@ -17,6 +17,7 @@ class AskEvent:
     def __str__(self):
         return f"customer: {self.customer_address}, seller: {self.seller_address}, total: {self.total}"
 
+    # TODO move to test utils
     @classmethod
     def from_values(cls, customer_public_key: str, customer_address: str, seller_address: str, total: int):
         return cls({

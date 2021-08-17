@@ -4,7 +4,6 @@ from Crypto.PublicKey import RSA
 from bot.contracts import ShroomMarketContract
 from bot.crypto import decrypt
 from bot.events import AskEvent
-from bot.inventory import Offer
 
 
 @pytest.fixture
